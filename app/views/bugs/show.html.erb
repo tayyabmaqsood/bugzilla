@@ -1,0 +1,72 @@
+<%= render :partial => 'welcome/shared/topnavbar'%>
+<%= render :partial => 'welcome/shared/flash_message'%>
+<div class = 'mx-5'>
+    <table class="table mt-5 table-borderless">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Bug No</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+
+        <tbody class = 'border'>
+          <tr>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          </tr>
+
+          <tr>
+            <th scope="row"><%= @bug.id%></th>
+            <td></td>
+            <th>Title</th>
+            <td><%= @bug.title%></td>
+
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <th>Description</th>
+            <td><%= @bug.deadline%></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <th>Bug type</th>
+            <td><%= @bug.bug_type%></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <th>Bug status</th>
+            <td><%= @bug.bug_status%></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <% if @bug.screenshot.attached?%>
+              <th class = 'pt-5' >Screenshot</th>
+                <td>  <%= image_tag @bug.screenshot, style: 'width: 300px;', id: 'bug-screenshot'%> </td>
+              <% else %>
+                <th>Screenshot</th>
+                <td>No Screenshot attached<td>
+              <% end %>
+          </tr>
+        </tbody>
+    </table>
+  <div class = 'mt-5 mb-5 d-flex justify-content-center'>
+  <%if @report.nil?%>
+      <%= link_to 'Assign bug to himself',assign_bug_to_developer_path(:bug_id => @bug.id, :project_id => @project.id),class: 'btn btn-primary mx-3'%>
+  <% elsif @report.user_id == current_user.id %>
+    <%= link_to 'Mark as resolved', "/projects/#{@project.id}/bugs/#{@bug.id}",
+              method: :delete,
+              data: { confirm: 'Are you sure you are done with it?' }, class: 'btn btn-dark add-resourse-button-width mx-3'%>
+  <% else %>
+    <% end %>
+    <%= link_to 'Go Back',{:controller => 'welcome', :action => 'user_main_page'} , class: 'btn btn-dark add-resourse-button-width'%>
+  </div>
+</div>
+

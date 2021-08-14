@@ -1,0 +1,27 @@
+<div class='container'>
+  <div class = 'form-group col-md-4 mt-5'>
+    <%= form_with model: @project, local: true do |form| %>
+      <% if @project.errors.any? %>
+        <div id="error_explanation" class = 'alert alert-danger'>
+          <h2>
+            <%= pluralize(@project.errors.count, "error")%> prohibited
+            this article from being saved:
+          </h2>
+          <ul>
+            <% @project.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <p>
+        <%= form.label :project_name , :for => 'Project Name',class: 'mb-3' %><br>
+        <%= form.text_field :projectname, :id => 'Project Name', class: 'form-control', :placeholder => 'Enter Project name'%>
+      </p>
+
+      <div>
+      <%= form.submit 'Submit', class: 'btn btn-primary mt-1 col-md-4 btn-lg', style: 'width:370px;' %>
+    <% end %>
+  </div>
+</div>

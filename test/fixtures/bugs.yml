@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  deadline: 2021-07-29 22:18:50
+  bug_type: MyString
+  user_type: MyString
+
+two:
+  title: MyString
+  deadline: 2021-07-29 22:18:50
+  bug_type: MyString
+  user_type: MyString

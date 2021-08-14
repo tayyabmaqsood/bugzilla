@@ -1,0 +1,76 @@
+<%= render :partial => 'welcome/shared/flash_message'%>
+
+<% @title="Create new bug" %>
+<div class = 'container-fluid'>
+<div class = 'mt-5  ps-5'>
+
+  <div class='text-left h1 me-5 pe-5'>
+    Create New Bug
+  </div>
+
+  <%= form_with model: [@project,@project.bugs.build], local:true do |form| %>
+  <div class = 'd-none'>
+        <%= form.label :screensyhot%>
+        <%= form.file_field :screenshot%>
+  </div>
+    <div class='col-md-8'>
+      <% if @bug.errors.any? %>
+        <div id="error_explanation" class = 'alert alert-danger'>
+          <button type="button" class="btn-close btn-right float-right" data-bs-dismiss="alert" aria-label="Close"></button>
+
+          <h3>
+            <%= pluralize(@bug.errors.count, "error")%> prohibited
+            this article from being saved:
+          </h3>
+          <ul>
+            <% @bug.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+
+      <div class = 'row mt-2 mb-2'>
+        <div class='form-group col-md-8 mb-3'>
+          <%= form.label :title, class: 'form-label'%>
+          <%= form.text_field :title, class: 'form-control', placeholder: 'Unique Title',:require => true %>
+        </div>
+
+        <div class='form-group col-md-8 mb-3'>
+          <%= form.label :deadline, class: 'form-label'%>
+          <%= form.date_field :deadline, :id => 'Deadline',class: 'form-control', placeholder: 'Deadline'%>
+        <div>
+
+      </div>
+
+
+      <div class = 'row mt-2 mb-2'>
+        <div class="col-md-12 form-group mb-3">
+          <%= form.label :bug_type ,class: 'form-label'%><br />
+          <div class=''>
+            <%= form.select :bug_type, options_for_select([['Please make an choice',nil],['Feature','feature'],['Bug','bug']]),{onchange: 'function()'} ,{class: 'form-select form-select-sm pb-2 pt-2 h2'} %>
+          </div>
+        </div>
+
+        <div class="col-md-12 form-group">
+            <%= form.label :bug_status ,class: 'form-label'%><br />
+            <%if :bug_type == 'bug'%>
+              <%= form.select :bug_status, options_for_select([['Please make an choice',nil],['New','new'],['Started','started'],['Completed','completed']]),{},{class: 'form-select form-select-sm pb-2 pt-2 h2'} %>
+            <%else%>
+              <%= form.select :bug_status, options_for_select([['Please make an choice',nil],['New','new'],['Started','started'],['Resolved','resolved']]),{},{class: 'form-select form-select-sm pb-2 pt-2 h2'} %>
+            <% end %>
+        </div>
+      </div>
+      <p id ='error_field' class= 'text-center'></p>
+      <button class = 'btn btn-dark btn-lg col-md-12 mb-3', type='button', id= 'button'>Upload Screenshot</button>
+      <div class='row'>
+        <%= form.button :submit ,name: "project_id",value: @project.id, class: 'btn btn-primary btn-lg col-md-5 me-4 ms-4' %>
+        <%= link_to 'Cancle',{:controller => 'welcome', action: :user_main_page},class: 'btn btn-danger btn-lg col-md-5' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+

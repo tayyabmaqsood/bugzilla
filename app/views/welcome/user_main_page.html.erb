@@ -1,0 +1,7 @@
+<% if current_user.user_type == 'manager'%>
+  <%= render :partial => 'welcome/shared/manager_actions'%>
+<%elsif current_user.user_type == 'developer'%>
+  <%= render :partial => 'welcome/shared/developer_actions'%>
+<%else%>
+  <%= render :partial => 'welcome/shared/qa_actions'%>
+<% end %>

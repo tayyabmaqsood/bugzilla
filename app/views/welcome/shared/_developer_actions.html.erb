@@ -1,0 +1,29 @@
+<%= render :partial => 'welcome/shared/topnavbar'%>
+<%= render :partial => 'welcome/shared/flash_message'%>
+<% if @users.any? %>
+  <h2 class = 'mx-2'>List of Projects</h2>
+  <div style='background:lightgray;' class = 'row mt-2 pt-2 mx-2 '>
+  <%@users.each_with_index do |user, index|%>
+    <%@project = Project.find_by(projectname: "#{ user.projectname }")%>
+    <div class = 'row pb-2' id = 'manager_project_list'>
+      <div class = 'col-1'>
+        <span class = 'font-size'><%= index + 1 %></span>
+      </div>
+      <div class='col-4'>
+        <span class='font-heading'><%= user.projectname%></span>
+      </div>
+      <div class = 'col-7'>
+        <div class = 'd-flex justify-content-end'>
+          <%= link_to 'View Details', developer_project_show_path(@project.id), class: 'btn btn-dark mx-2 px-3 add-resourse-button-width'%>
+          <%= link_to 'View bugs', project_bugs_path(@project.id), class: 'btn btn-primary mx-2 px-3 add-resourse-button-width'%>
+        </div>
+      </div>
+
+    </div>
+    <hr>
+  <% end %>
+</div>
+
+<%else%>
+  <%= render :partial => 'welcome/shared/error_messages'%>
+<% end %>

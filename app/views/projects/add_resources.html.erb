@@ -1,0 +1,77 @@
+<%=render :partial => 'welcome/shared/topnavbar'%>
+<%= render :partial => 'welcome/shared/flash_message'%>
+<div class = 'row mt-5'>
+  <div class = 'col-5 border  mx-5 px-0'>
+    <div class = 'text-center background_gray px-0'>
+      <span class = 'font-heading'>Developers</span>
+    </div>
+
+      <%if @developers.nil? %>
+        <p>Nothing To show Here</p>
+      <%else%>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col"></th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <%@developers.each_with_index do |developer,index|%>
+                <tr>
+                  <th scope="row"><%= index + 1%></th>
+                  <td><%= developer.username%></td>
+                  <td>
+                    <div class = 'd-flex justify-content-end'>
+                      <%= link_to 'Add', add_project_users_url(project_id: @project.id ,resource_id: developer.id) , class: 'btn btn-dark border-top add-resourse-button-width'%>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <%end%>
+  </div>
+
+
+  <div class = 'col-5 border px-0'>
+    <div class = 'text-center background_gray'>
+      <span class = 'font-heading '>Qas</span>
+    </div>
+    <%if @qas.nil? %>
+        <p>Nothing To show Here</p>
+      <%else%>
+
+         <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%@qas.each_with_index do |qa,index|%>
+                <tr>
+                  <th scope="row"><%= index + 1%></th>
+                  <td><%= qa.username%></td>
+                  <td>
+                    <div class = 'd-flex justify-content-end'>
+                      <%= link_to 'Add', add_project_users_url(project_id: @project.id ,resource_id: qa.id)  , class: 'btn btn-dark border-top add-resourse-button-width'%>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+
+        <%end%>
+  </div>
+  <div class = 'mt-5 d-flex justify-content-center'>
+    <%= link_to 'View Full Project', project_url(@project.id) , class: 'btn btn-primary mx-3 px-3'%>
+    <%= link_to "Go Back",{:controller => 'welcome', :action => 'user_main_page'} , :class => 'btn btn-dark'%>
+  </div>
+
+</div>

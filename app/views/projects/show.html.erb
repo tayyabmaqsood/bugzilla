@@ -1,0 +1,86 @@
+<%= render :partial => 'welcome/shared/topnavbar'%>
+<%= render :partial => 'welcome/shared/flash_message'%>
+<div class = 'row mt-5'>
+  <div class = 'mb-5'>
+  <span class = 'font-heading ms-4 h2'>Project Name: </span>  <span class = 'font-heading h2 mx-3'><%= @project.projectname%></span>
+   </div>
+  <div class = 'col-5 border  mx-5 px-0'>
+    <div class = 'text-center background_gray px-0'>
+      <span class = 'font-heading'>Developers</span>
+    </div>
+
+      <%if @developers.nil? %>
+        <p>Nothing To show Here</p>
+      <%else%>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col"></th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <%@developers.each_with_index do |developer|%>
+                <%resource = Manage.find_by(:user_id => developer.id, :project_id => @project.id)%>
+                  <% if resource%>
+                    <tr>
+                      <th scope="row"><%= developer.id%></th>
+                      <td><%= developer.username%></td>
+                      <td>
+                        <div class = 'd-flex justify-content-end'>
+                          <%= link_to 'Remove', remove_users_from_project_url(mangeid: resource.id ,projectid: @project.id ,resourceid: developer.id) , class: 'btn btn-dark border-top add-resourse-button-width'%>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        <%end%>
+  </div>
+
+
+  <div class = 'col-5 border px-0'>
+    <div class = 'text-center background_gray'>
+      <span class = 'font-heading '>Qas</span>
+    </div>
+    <%if @qas.nil? %>
+        <p>Nothing To show Here</p>
+      <%else%>
+
+         <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%@qas.each_with_index do |qa,index|%>
+                <%resource = Manage.find_by(:user_id => qa.id, :project_id => @project.id)%>
+                  <% if resource%>
+                    <tr>
+                      <th scope="row"><%= qa.id%></th>
+                      <td><%= qa.username%></td>
+                      <td>
+                        <div class = 'd-flex justify-content-end'>
+                          <%= link_to 'Remove', remove_users_from_project_url(mangeid: resource.id ,projectid: @project.id ,resourceid: qa.id) , class: 'btn btn-dark border-top add-resourse-button-width'%>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+              <% end %>
+            </tbody>
+          </table>
+
+        <%end%>
+  </div>
+  <div class = 'mt-5 d-flex justify-content-center'>
+    <%= link_to 'Add Users to this project', add_users_to_project_path(@project.id), class: 'btn btn-primary mx-3 px-3'%>
+    <%= link_to "Go Back",{:controller => 'welcome', :action => 'user_main_page'} , :class => 'btn btn-dark add-resourse-button-width'%>
+  </div>
+
+</div>

@@ -1,0 +1,4 @@
+<%=render :partial => 'welcome/shared/topnavbar'%>
+<% @title = 'Edit Project'%>
+<%= render :partial => 'projects/shared/form'%>
+<%= link_to 'Back', {:controller => 'welcome', :action => 'user_main_page'}, :class => 'btn btn-dark mt-1 col-md-4 btn-lg' %>

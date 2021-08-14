@@ -1,0 +1,12 @@
+<%if flash[:message]%>
+  <div class = 'alert alert-warning d-flex justify-content-center alert-dismissible fade show col-12 '>
+    <div class="message"><%= flash[:message] %></div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<%end%>
+<% if flash[:warning]%>
+  <div class = 'alert alert-danger d-flex justify-content-center alert-dismissible fade show col-12 '>
+    <div class="message"><%= flash[:warning] %></div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
