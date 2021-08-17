@@ -5,12 +5,10 @@ class Bug < ApplicationRecord
   has_many :reports, dependent: :destroy
   has_many :users, through: :report
 
-#   validates :screenshot, allow_blank: true, presence: false, format: {
-#                                             with: %r{ \.gif|png }i,
-#                                             message: 'Image formate must be in gif or png'
-#  }
-  validates :title, presence: true,uniqueness: true
-  validates :bug_type, presence: true, length: { minimum: 2, message:  'Select bug type' }
-  validates :bug_status, presence: true, length: { minimum: 2, message: 'Select bug status' }
-
+  # validates :screenshot, allow_blank: true, presence: false, format: {
+  #                                            with: %r{ \.gif|png }i,
+  #                                            message: 'Image formate must be in gif or png'
+  # }
+  validates :title, presence: true, uniqueness: true
+  validates :bug_type, presence: true, length: { minimum: 2, message: 'Select bug type' }
 end

@@ -54,13 +54,9 @@
         </div>
 
         <div class="col-md-12 form-group">
-            <%= form.label :bug_status ,class: 'form-label'%><br />
-            <%if :bug_type == 'bug'%>
-              <%= form.select :bug_status, options_for_select([['Please make an choice',nil],['New','new'],['Started','started'],['Completed','completed']]),{},{class: 'form-select form-select-sm pb-2 pt-2 h2'} %>
-            <%else%>
-              <%= form.select :bug_status, options_for_select([['Please make an choice',nil],['New','new'],['Started','started'],['Resolved','resolved']]),{},{class: 'form-select form-select-sm pb-2 pt-2 h2'} %>
-            <% end %>
+          <%= form.hidden_field :bug_status, value: 'new'  %>
         </div>
+
       </div>
       <p id ='error_field' class= 'text-center'></p>
       <button class = 'btn btn-dark btn-lg col-md-12 mb-3', type='button', id= 'button'>Upload Screenshot</button>

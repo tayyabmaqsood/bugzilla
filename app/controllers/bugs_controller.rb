@@ -6,12 +6,10 @@ class BugsController < ApplicationController
 
   def new
     @project = Project.find(params[:project_id])
-    if @project.nil?
-      redirect_to :controller => 'welcome', action: :user_main_page and return
-    else
-      @bug = @project.bugs.build
-      authorize @bug
-    end
+    redirect_to controller: 'welcome', action: :user_main_page and return if @project.nil?
+
+    @bug = @project.bugs.build
+    authorize @bug
   end
 
   def create
@@ -19,43 +17,44 @@ class BugsController < ApplicationController
     @bug = @project.bugs.create(bug_params)
     if @bug.save
       flash[:message] = "Bug successfully repoted against #{@project.projectname}"
-      redirect_to :controller => 'welcome', action: :user_main_page
+      redirect_to controller: 'welcome', action: :user_main_page
     else
-      flash[:message] = "Unable to create bug please fill all fields and try again"
+      flash[:message] = 'Unable to create bug please fill all fields and try again'
       redirect_to new_project_bug_url(@project.id)
     end
   end
 
   def assign_bug_to_developer
-    assigned_user = Manage.find_by(:user_id => current_user.id, :project_id => params[:project_id])
+    assigned_user = Manage.find_by(user_id: current_user.id, project_id: params[:project_id])
     unless assigned_user.nil?
       @project = Project.find(params[:project_id])
       if @project.bugs.ids.include? params[:bug_id].to_i
-        @report = Report.find_by(:bug_id => params[:bug_id])
+        @report = Report.find_by(bug_id: params[:bug_id])
         @bug = Bug.find(params[:bug_id])
         authorize @bug
         if @report.nil?
-            @report = Report.new(:user_id => current_user.id , :bug_id => params[:bug_id])
-            if @report.save
-              flash[:message] = "Bug Successfully assigned to #{@current_user.username}"
-            else
-              flash[:message] = "Unable to assign bug"
-            end
+          @report = Report.new(user_id: current_user.id, bug_id: params[:bug_id])
+          if @report.save
+            flash[:message] = "Bug Successfully assigned to #{@current_user.username}"
+          else
+            flash[:message] = 'Unable to assign bug'
+          end
         else
-          flash[:message] = "This bug is already assigned to some user"
+          flash[:message] = 'This bug is already assigned to some user'
         end
         redirect_to developer_project_show_path(@project.id)
       else
-        redirect_to :controller => 'welcome', :action => 'user_main_page'
+        redirect_to controller: 'welcome', action: 'user_main_page'
       end
     end
   end
 
   def show
-    @report = Report.find_by(:bug_id => params[:bug_id])
+    @report = Report.find_by(bug_id: params[:bug_id])
     @bug = Bug.find(params[:bug_id])
     @project = Project.find(params[:project_id])
   end
+
   def destroy
     @bug = Bug.find(params[:id])
     @project = Project.find(params[:project_id])
@@ -66,6 +65,7 @@ class BugsController < ApplicationController
     end
     redirect_to developer_project_show_path(@project.id)
   end
+
   private
 
   def bug_params
