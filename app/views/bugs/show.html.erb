@@ -61,9 +61,7 @@
   <%if @report.nil?%>
       <%= link_to 'Assign bug to himself',assign_bug_to_developer_path(:bug_id => @bug.id, :project_id => @project.id),class: 'btn btn-primary mx-3'%>
   <% elsif @report.user_id == current_user.id %>
-    <%= link_to 'Mark as resolved', "/projects/#{@project.id}/bugs/#{@bug.id}",
-              method: :delete,
-              data: { confirm: 'Are you sure you are done with it?' }, class: 'btn btn-dark add-resourse-button-width mx-3'%>
+    <%= link_to 'Mark as Done', mark_as_resolve_path(:bug_id => @bug.id), class: 'btn btn-dark add-resourse-button-width mx-3'%>
   <% else %>
     <% end %>
     <%= link_to 'Go Back',{:controller => 'welcome', :action => 'user_main_page'} , class: 'btn btn-dark add-resourse-button-width'%>

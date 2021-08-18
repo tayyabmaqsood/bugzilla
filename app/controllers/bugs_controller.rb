@@ -1,5 +1,6 @@
 class BugsController < ApplicationController
   def index
+    @user = current_user
     @project = Project.find(params[:project_id])
     @bugs = @project.bugs
   end
@@ -34,6 +35,8 @@ class BugsController < ApplicationController
         authorize @bug
         if @report.nil?
           @report = Report.new(user_id: current_user.id, bug_id: params[:bug_id])
+          @bug.bug_status = 'started'
+          @bug.save
           if @report.save
             flash[:message] = "Bug Successfully assigned to #{@current_user.username}"
           else
@@ -55,15 +58,24 @@ class BugsController < ApplicationController
     @project = Project.find(params[:project_id])
   end
 
+  def mark_resolve
+    @bug = Bug.find(params[:bug_id])
+    @bug.bug_status = 'completed' if @bug.bug_type == 'feature'
+    @bug.bug_status = 'resolved' if @bug.bug_type == 'bug'
+    if @bug.save
+      flash[:message] = 'Good work you have done your job'
+      redirect_to root_path_url
+    end
+  end
+
   def destroy
     @bug = Bug.find(params[:id])
     @project = Project.find(params[:project_id])
     if @bug.destroy
-      flash[:message] = 'Bug mark as resolved'
-    else
+      flash[:message] = 'Bug successfully deleted'
       flash[:message] = 'Bug not found'
     end
-    redirect_to developer_project_show_path(@project.id)
+    redirect_to project_bugs_url
   end
 
   private

@@ -28,7 +28,8 @@ class ProjectsController < ApplicationController
   def show_developer_project_details
     if current_user.user_type == 'developer'
       @project = Project.find(params[:id])
-      @bugs = @project.bugs
+      @bugs = @project.bugs.where(bug_status: 'new')
+      p @bugs
     else
       flash[:message] = 'Oops you are not supposed to do this!'
       redirect_to controller: 'welcome', action: :user_main_page and return
@@ -72,7 +73,7 @@ class ProjectsController < ApplicationController
 
   def remove_users_from_project
     @manage = Manage.find(params[:mangeid])
-    if ( @manage.user_id.to_i == params[:resourceid].to_i ) && ( @manage.project_id.to_i == params[:projectid].to_i )
+    if ( @manage.user_id.to_i == params[:resourceid].to_i) && (@manage.project_id.to_i == params[:projectid].to_i )
       @manage.destroy
       @manage.save
       flash[:message] = 'Successfuly remove user from project'
@@ -120,7 +121,7 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:projectname)
+    params.require(:project).permit(:projectname, :project_description)
   end
 
   def custom_authenticate_user!

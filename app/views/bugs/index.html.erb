@@ -61,6 +61,19 @@
                 <td>No Screenshot attached<td>
               <% end %>
           </tr>
+
+          <% if @user.user_type == 'qa'%>
+            <tr>
+            <td></td>
+              <td colspan = '3'>
+              <div class = 'd-flex justify-content-end'>
+                <%= link_to 'Delete', "/projects/#{@project.id}/bugs/#{bug.id}",
+                method: :delete,
+                data: { confirm: 'Are you sure ?' }, class: 'ms-5'%>
+              </div>
+            </tr>
+          <% end %>
+
         </tbody>
         <% end %>
     </table>

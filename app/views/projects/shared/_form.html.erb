@@ -1,6 +1,6 @@
 <div class='container'>
   <div class = 'form-group col-md-4 mt-5'>
-    <%= form_with model: @project, local: true do |form| %>
+    <%= form_with model: @project, id: 'project_from', local: true do |form| %>
       <% if @project.errors.any? %>
         <div id="error_explanation" class = 'alert alert-danger'>
           <h2>
@@ -15,10 +15,15 @@
         </div>
       <% end %>
 
-      <p>
-        <%= form.label :project_name , :for => 'Project Name',class: 'mb-3' %><br>
-        <%= form.text_field :projectname, :id => 'Project Name', class: 'form-control', :placeholder => 'Enter Project name'%>
-      </p>
+      <div>
+        <%= form.label :project_name , for: 'Project Name',class: 'mb-3' %><br>
+        <%= form.text_field :projectname, id: 'Project Name', class: 'form-control', placeholder: 'Enter Project name', required: true %>
+      </div>
+      <div>
+        <%= form.label :project_description, for: 'project_description', class:'mb-3 mt-2 mb-1 font-weight-bold mt-2'%>
+        <%= form.text_area :project_description, :id => 'project_description', class: 'form-control mb-2', :placeholder => 'Enter Project Description', style: 'width: 530px; height:150px; overflow:hidden;', required: true %>
+
+      </div>
 
       <div>
       <%= form.submit 'Submit', class: 'btn btn-primary mt-1 col-md-4 btn-lg', style: 'width:370px;' %>
