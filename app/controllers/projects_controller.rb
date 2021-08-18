@@ -19,8 +19,8 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
-    @developers = User.all.where(user_type: 'developer')
-    @qas = User.all.where(user_type: 'qa')
+    @developers = User.where(user_type: 'developer')
+    @qas = User.where(user_type: 'qa')
     authorize @project
   end
 
@@ -29,7 +29,6 @@ class ProjectsController < ApplicationController
     if current_user.user_type == 'developer'
       @project = Project.find(params[:id])
       @bugs = @project.bugs.where(bug_status: 'new')
-      p @bugs
     else
       flash[:message] = 'Oops you are not supposed to do this!'
       redirect_to controller: 'welcome', action: :user_main_page and return
