@@ -31,3 +31,7 @@ $(document).on('turbolinks:load',function(){
     }
   });
 });
+
+// $(document).on('ajax:success', '#add_resource', function(event,data,status,xhr){
+//   alert(data)
+// })

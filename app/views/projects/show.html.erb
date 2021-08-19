@@ -23,12 +23,12 @@
               <%@developers.each_with_index do |developer|%>
                 <%resource = Manage.find_by(:user_id => developer.id, :project_id => @project.id)%>
                   <% if resource%>
-                    <tr>
+                    <tr id = 'resource_<%= developer.id%>'>
                       <th scope="row"><%= developer.id%></th>
                       <td><%= developer.username%></td>
                       <td>
                         <div class = 'd-flex justify-content-end'>
-                          <%= link_to 'Remove', remove_users_from_project_url(mangeid: resource.id ,projectid: @project.id ,resourceid: developer.id) , class: 'btn btn-dark border-top add-resourse-button-width'%>
+                          <%= link_to 'Remove', remove_users_from_project_url(projectid: @project.id ,resourceid: developer.id) , class: 'btn btn-dark border-top add-resourse-button-width',remote:true%>
                         </div>
                       </td>
                     </tr>
@@ -56,12 +56,12 @@
               <%@qas.each_with_index do |qa,index|%>
                 <%resource = Manage.find_by(:user_id => qa.id, :project_id => @project.id)%>
                   <% if resource%>
-                    <tr>
+                    <tr id = 'resource_<%= qa.id%>'>
                       <th scope="row"><%= qa.id%></th>
                       <td><%= qa.username%></td>
                       <td>
                         <div class = 'd-flex justify-content-end'>
-                          <%= link_to 'Remove', remove_users_from_project_url(mangeid: resource.id ,projectid: @project.id ,resourceid: qa.id) , class: 'btn btn-dark border-top add-resourse-button-width'%>
+                          <%= link_to 'Remove', remove_users_from_project_url(projectid: @project.id ,resourceid: qa.id) , class: 'btn btn-dark border-top add-resourse-button-width',remote:true%>
                         </div>
                       </td>
                     </tr>

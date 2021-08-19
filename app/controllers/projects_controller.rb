@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
       flash[:message] = 'New Project is created'
       redirect_to root_path_url
     else
-      render 'new'
+      render new_project_path
     end
   end
 
@@ -25,13 +25,9 @@ class ProjectsController < ApplicationController
 
   # this view is only for developer
   def show_developer_project_details
-    if current_user.user_type == 'developer'
-      @project = Project.find(params[:id])
-      @bugs = @project.bugs.where(bug_status: 'new')
-    else
-      flash[:message] = 'Oops you are not supposed to do this!'
-      redirect_to controller: 'welcome', action: :user_main_page and return
-    end
+    @project = Project.find(params[:id])
+    @bugs = @project.bugs.where(bug_status: 'new')
+    authorize @project
   end
 
   def index
@@ -68,48 +64,32 @@ class ProjectsController < ApplicationController
   end
 
   def remove_users_from_project
-    @manage = Manage.find(params[:mangeid])
-    if ( @manage.user_id.to_i == params[:resourceid].to_i) && (@manage.project_id.to_i == params[:projectid].to_i )
+    @manage = Manage.find_by(user_id: params[:resourceid], project_id: params[:projectid])
+    @resource_id = params[:resourceid]
+    if !@manage.nil?
       @manage.destroy
-      @manage.save
       flash[:message] = 'Successfuly remove user from project'
     else
       flash[:message] = 'Uable to delete Please Dont change URL'
     end
-    redirect_to project_url(params[:projectid]) and return
   end
 
   def add_resources
-    condition = false
-    @project = Project.find(params[:id])
+    @project = current_user.projects.find(params[:id])
     authorize @project
-    current_user.projects.each do |project|
-      condition = true if @project.id == project.id
-    end
-    if condition
-      @developers = User.all.where(user_type: 'developer')
-      @qas = User.all.where(user_type: 'qa')
-    else
-      flash[:message] = 'Please dont change url'
-      redirect_to controller: 'welcome', action: :user_main_page and return
-    end
+    @developers = developers_list
+    @qas = qas_list
   end
 
   def add_users_to_project
     user = User.find(params[:resource_id])
-    @manage = Manage.all.where(user_id: user.id, project_id: params[:project_id])
-    if @manage.count.zero?
-      # current_user.manages << Manage.new( user_id: user.id, project_id:  current_user.projects.ids)
-      @manage = Manage.new( user_id: user.id, project_id:  params[:id])
-      if @manage.save
-        flash[:message] = 'Resourse Successfuly added to this project'
-      else
-        flash[:message] = 'Unable to assign resource to this project'
-      end
+    @resource_id = params[:resource_id]
+    if user_already_assigned?(user)
+      @manage = Manage.new(user_id: user.id, project_id: params[:id])
+      flash[:message] = 'Resourse Successfuly added to this project' if @manage.save
     else
       flash[:message] = 'This resourse already added to same project'
     end
-    redirect_to controller: 'projects', action: :add_resources and return
   end
 
   private
@@ -117,4 +97,26 @@ class ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(:projectname, :project_description)
   end
+
+  def developers_list
+    devlist = []
+    User.where(user_type: 'developer').find_each do |developer|
+      devlist.append(developer.id.to_i) if Manage.find_by(project_id: params[:id], user_id: developer.id).nil?
+    end
+    User.where(id: devlist)
+  end
+
+  def qas_list
+    qa_list = []
+    User.where(user_type: 'qa').find_each do |qa|
+      qa_list.append(qa.id.to_i) if Manage.find_by(project_id: params[:id], user_id: qa.id).nil?
+    end
+    User.where(id: qa_list)
+  end
+
+  def user_already_assigned?(user)
+    @manage = Manage.where(user_id: user.id, project_id: params[:project_id])
+    @manage.count.zero?
+  end
+
 end

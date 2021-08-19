@@ -28,6 +28,10 @@ class ProjectPolicy < ApplicationPolicy
     user.user_type == 'manager'
   end
 
+  def show_developer_project_details?
+    user.user_type == 'developer'
+  end
+
   def add_resources?
     user.present? && user.user_type == 'manager'
   end
