@@ -18,8 +18,8 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
-    @developers = User.where(user_type: 'developer')
-    @qas = User.where(user_type: 'qa')
+    @developers = valid_users_to_remove('developer')
+    @qas = valid_users_to_remove('qa')
     authorize @project
   end
 
@@ -77,8 +77,8 @@ class ProjectsController < ApplicationController
   def add_resources
     @project = current_user.projects.find(params[:id])
     authorize @project
-    @developers = developers_list
-    @qas = qas_list
+    @developers = valid_users_to_add('developer')
+    @qas = valid_users_to_add('qa')
   end
 
   def add_users_to_project
@@ -98,25 +98,24 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(:projectname, :project_description)
   end
 
-  def developers_list
-    devlist = []
-    User.where(user_type: 'developer').find_each do |developer|
-      devlist.append(developer.id.to_i) if Manage.find_by(project_id: params[:id], user_id: developer.id).nil?
+  def valid_users_to_add(user_type)
+    user_list = []
+    User.where(user_type: user_type.to_s).find_each do |user|
+      user_list.append(user.id.to_i) if Manage.find_by(project_id: params[:id], user_id: user.id).nil?
     end
-    User.where(id: devlist)
+    User.where(id: user_list)
   end
 
-  def qas_list
-    qa_list = []
-    User.where(user_type: 'qa').find_each do |qa|
-      qa_list.append(qa.id.to_i) if Manage.find_by(project_id: params[:id], user_id: qa.id).nil?
+  def valid_users_to_remove(user_type)
+    user_list = []
+    User.where(user_type: user_type.to_s).find_each do |user|
+      user_list.append(user.id.to_i) unless Manage.find_by(project_id: params[:id], user_id: user.id).nil?
     end
-    User.where(id: qa_list)
+    User.where(id: user_list)
   end
 
   def user_already_assigned?(user)
     @manage = Manage.where(user_id: user.id, project_id: params[:project_id])
     @manage.count.zero?
   end
-
 end

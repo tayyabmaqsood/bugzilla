@@ -11,6 +11,7 @@
     <div class = 'text-center background_gray px-0'>
       <span class = 'font-heading'>Developers</span>
     </div>
+    <% if @developers.any? %>
           <table class="table table-striped">
             <thead>
               <tr>
@@ -20,29 +21,31 @@
               </tr>
             </thead>
             <tbody>
-              <%@developers.each_with_index do |developer|%>
-                <%resource = Manage.find_by(:user_id => developer.id, :project_id => @project.id)%>
-                  <% if resource%>
-                    <tr id = 'resource_<%= developer.id%>'>
-                      <th scope="row"><%= developer.id%></th>
-                      <td><%= developer.username%></td>
-                      <td>
-                        <div class = 'd-flex justify-content-end'>
-                          <%= link_to 'Remove', remove_users_from_project_url(projectid: @project.id ,resourceid: developer.id) , class: 'btn btn-dark border-top add-resourse-button-width',remote:true%>
-                        </div>
-                      </td>
-                    </tr>
-                  <% end %>
+              <%@developers.each_with_index do |developer,index|%>
+                <tr id = 'resource_<%= developer.id%>'>
+                  <th scope="row"><%= index + 1%></th>
+                  <td><%= developer.username%></td>
+                  <td>
+                    <div class = 'd-flex justify-content-end'>
+                      <%= link_to 'Remove', remove_users_from_project_url(projectid: @project.id ,resourceid: developer.id) , class: 'btn btn-dark border-top add-resourse-button-width',remote:true%>
+                    </div>
+                  </td>
+                </tr>
               <% end %>
             </tbody>
           </table>
-  </div>
+  <% else %>
+    <%=render partial: 'welcome/shared/error_messages1'%>
+  <% end %>
+
+</div>
 
 
   <div class = 'col-5 border px-0'>
     <div class = 'text-center background_gray'>
       <span class = 'font-heading '>Qas</span>
     </div>
+    <% if @qas.any? %>
 
          <table class="table table-striped">
             <thead>
@@ -53,23 +56,24 @@
               </tr>
             </thead>
             <tbody>
-              <%@qas.each_with_index do |qa,index|%>
-                <%resource = Manage.find_by(:user_id => qa.id, :project_id => @project.id)%>
-                  <% if resource%>
-                    <tr id = 'resource_<%= qa.id%>'>
-                      <th scope="row"><%= qa.id%></th>
-                      <td><%= qa.username%></td>
-                      <td>
-                        <div class = 'd-flex justify-content-end'>
-                          <%= link_to 'Remove', remove_users_from_project_url(projectid: @project.id ,resourceid: qa.id) , class: 'btn btn-dark border-top add-resourse-button-width',remote:true%>
-                        </div>
-                      </td>
-                    </tr>
-                  <% end %>
+            <%@qas.each_with_index do |qa,index|%>
+              <tr id = 'resource_<%= qa.id%>'>
+                <th scope="row"><%= index + 1%></th>
+                <td><%= qa.username%></td>
+                <td>
+                  <div class = 'd-flex justify-content-end'>
+                    <%= link_to 'Remove', remove_users_from_project_url(projectid: @project.id ,resourceid: qa.id) , class: 'btn btn-dark border-top add-resourse-button-width',remote:true%>
+                  </div>
+                </td>
+              </tr>
               <% end %>
             </tbody>
           </table>
 
+  <% else %>
+    <%=render partial:'welcome/shared/error_messages1'%>
+  <% end %>
+  
   </div>
   <div class = 'mt-5 d-flex justify-content-center'>
     <%= link_to 'Add Users to this project', add_users_to_project_path(@project.id), class: 'btn btn-primary mx-3 px-3'%>

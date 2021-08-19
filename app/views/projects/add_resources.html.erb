@@ -6,9 +6,7 @@
       <span class = 'font-heading'>Developers</span>
     </div>
 
-      <%if @developers.nil? %>
-        <p>Nothing To show Here</p>
-      <%else%>
+      <%if @developers.any? %>
           <table class="table table-striped" id = 'add_d_resource'>
             <thead>
               <tr>
@@ -32,7 +30,9 @@
               <% end %>
             </tbody>
           </table>
-        <%end%>
+      <% else %>
+        <%= render partial: 'welcome/shared/error_messages1'%>
+      <%end%>
   </div>
 
 
@@ -40,10 +40,7 @@
     <div class = 'text-center background_gray'>
       <span class = 'font-heading '>Qas</span>
     </div>
-    <%if @qas.nil? %>
-        <p>Nothing To show Here</p>
-      <%else%>
-
+    <%if @qas.any? %>
          <table class="table table-striped">
             <thead>
               <tr>
@@ -66,8 +63,9 @@
               <% end %>
             </tbody>
           </table>
-
-        <%end%>
+    <% else %>
+      <%= render partial: 'welcome/shared/error_messages1'%>
+    <%end%>
   </div>
   <div class = 'mt-5 d-flex justify-content-center'>
     <%= link_to 'View Full Project', project_url(@project.id) , class: 'btn btn-primary mx-3 px-3'%>
