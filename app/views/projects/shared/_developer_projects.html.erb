@@ -1,0 +1,15 @@
+<tr>
+  <th scope="row"> <%=index%> </th>
+  <td><%= @project.projectname %></td>
+  <% if  @project.project_description.length > 20  %>
+    <td><%= @project.project_description[0..20]+ '....'%><title><%= @project.project_description%></title></td>
+  <% else %>
+    <td><%= @project.project_description%></td>
+  <% end %>
+  <td class = 'd-flex justify-content-end'>
+    <div class = 'float-right'>
+      <%= link_to 'View Details', developer_project_show_path(@project.id), class: 'btn btn-dark mx-2 px-3 add-resourse-button-width'%>
+      <%= link_to 'View bugs', project_bugs_path(@project.id), class: 'btn btn-primary mx-2 px-3 add-resourse-button-width'%>
+    </div>
+  </td>
+</tr>
