@@ -18,3 +18,16 @@
 //= require turbolinks
 //= require_tree .
 
+$(document).ready(function(){
+  $('#destroy').on('click',function(){
+    if (confirm("Are you sure you want to delete?") == true) {
+      var userId = $(this).attr('data-user-id');
+      $.ajax({
+        url: '/projects/' + userId,
+        type: 'DELETE',
+        success: function(r){
+        }
+      });
+    }
+  });
+});
