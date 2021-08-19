@@ -3,9 +3,4 @@ class WelcomeController < ApplicationController
   def user_main_page
     @users = current_user.projects.all
   end
-
-  def index
-    @users = current_user.projects.all
-  end
-
 end

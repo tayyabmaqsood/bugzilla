@@ -1,0 +1,10 @@
+<%@projects.each do |project|%>
+<tbody class = 'border-bottom'>
+
+  <tr>
+    <td><%= project.id%></td>
+    <td><%= project.projectname%></td>
+    <td><%= project.project_description%></td>
+  </tr>
+<tbody>
+<% end %>

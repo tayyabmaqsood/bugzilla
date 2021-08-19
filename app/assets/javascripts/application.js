@@ -18,8 +18,8 @@
 //= require turbolinks
 //= require_tree .
 
-$(document).ready(function(){
-  $('#destroy').on('click',function(){
+$(document).on('turbolinks:load',function(){
+  $('.destroy').on('click',function(){
     if (confirm("Are you sure you want to delete?") == true) {
       var userId = $(this).attr('data-user-id');
       $.ajax({

@@ -1,1 +1,22 @@
 <%= render :partial => 'welcome/shared/topnavbar'%>
+<%@title = "#{current_user.user_type} Projects"%>
+
+<% if @projects.any? %>
+  <div class = 'mx-3 mt-2'>
+  <table class="table table-borderless">
+    <thead class = 'border-bottom' id = 'projects_list'>
+        <tr>
+          <th scope="col">Project Id</th>
+          <th scope="col">Project Name</th>
+          <th scope="col">Project Description</th>
+        </tr>
+      </thead>
+       <%=  render partial: 'projects/shared/projects_list', collections: @projects%>
+      </tbody>
+  </table>
+  </div>
+<%else%>
+    <%= render :partial => 'welcome/shared/error_messages'%>
+<% end %>
+<%= link_to 'Go Back',{controller: 'welcome', action: :user_main_page}, class: 'btn btn-dark mx-3 btn-lg btn-block mt-3'%>
+
