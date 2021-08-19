@@ -1,6 +1,5 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-
   def new
     @project = current_user.projects.build
     authorize @project
@@ -48,14 +47,12 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find(params[:id])
     authorize @project
-    if current_user.projects.ids.include? @project.id
-      if @project.update(project_params)
-        flash[:message] = 'Changes Saved'
-        redirect_to controller: 'welcome', action: :user_main_page
-      else
-        flash[:message] = 'Uable to save changes'
-        render 'projects#edit'
-      end
+    if @project.update(project_params)
+      flash[:message] = 'Changes Saved'
+      redirect_to controller: 'welcome', action: :user_main_page
+    else
+      flash[:message] = 'Uable to save changes'
+      render edit_project_url(@project)
     end
   end
 
@@ -84,12 +81,10 @@ class ProjectsController < ApplicationController
 
   def add_resources
     condition = false
-    @project= Project.find(params[:id])
+    @project = Project.find(params[:id])
     authorize @project
     current_user.projects.each do |project|
-      if @project.id == project.id
-        condition = true
-      end
+      condition = true if @project.id == project.id
     end
     if condition
       @developers = User.all.where(user_type: 'developer')
@@ -121,9 +116,5 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:projectname, :project_description)
-  end
-
-  def custom_authenticate_user!
-    authenticate_user! if params[:user_type] == 'manager'
   end
 end

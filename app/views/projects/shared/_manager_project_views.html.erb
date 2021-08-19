@@ -8,10 +8,10 @@
   <% end %>
   <td class = 'd-flex justify-content-end'>
   <div class = 'float-right'>
-    <%= link_to 'View Full', project_url(@project.id), class: 'btn btn-dark mx-2 px-3'%>
-    <%= link_to 'Edit', edit_project_url(user), class: 'btn btn-dark mx-2 px-3'%>
-    <div class = 'destroy btn btn-danger px-3 mx-2' data-user-id="<%= @project.id %>">Delete</div>
-    <%= link_to 'Add resource',add_users_to_project_path(@project.id),class: 'btn btn-primary '%>
+    <%= link_to 'View Details', project_url(@project), class: 'btn btn-dark mx-2 px-3'%>
+    <%= link_to 'Edit', edit_project_url(@project), class: 'btn btn-dark mx-2 px-3'%>
+    <div class = 'destroy btn btn-danger px-3 mx-2' data-user-id="<%= @project.id %>"> Delete</div>
+    <%= link_to 'Add resource',add_users_to_project_path(@project),class: 'btn btn-primary '%>
   </div>
   </td>
 </tr>

@@ -1,8 +1,8 @@
-<%@projects.each do |project|%>
+<%@projects.each_with_index do |project,index|%>
 <tbody class = 'border-bottom'>
 
   <tr>
-    <td><%= project.id%></td>
+    <td><%= index+1%></td>
     <td><%= project.projectname%></td>
     <td><%= project.project_description%></td>
   </tr>
