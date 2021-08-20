@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  
   before_action -> { reset_bug_status(params[:resourceid], params[:projectid]) }, only: [:remove_users_from_project]
   before_action :authenticate_user!
   def new
@@ -124,12 +125,12 @@ class ProjectsController < ApplicationController
     unless @user.nil?
       project = @user.projects.find_by(id: project_id.to_i)
       project.bugs.where(bug_status: 'started').find_each do |bug|
-      @report = Report.find_by(user_id: params, bug_id: bug.id)
-      unless @report.nil?
-        @report.destroy
-        bug.update(bug_status: 'new')
+        @report = Report.find_by(user_id: params, bug_id: bug.id)
+        unless @report.nil?
+          @report.destroy
+          bug.update(bug_status: 'new')
+        end
       end
     end
   end
-end
 end

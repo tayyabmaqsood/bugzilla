@@ -1,8 +1,7 @@
 <%= render :partial => 'welcome/shared/topnavbar'%>
 <%= render :partial => 'welcome/shared/flash_message'%>
 <% if @users.any? %>
-  <%@users.each_with_index do |user, index|%>
-    <%@project = Project.find_by(projectname: "#{ user.projectname }")%>
+
     <table class="table table-light table-striped table-hover mt-2" id = 'manager_project_list'>
       <caption>List of projects assign to developer</caption>
       <thead>
@@ -20,7 +19,6 @@
       <% end %>
     </tbody>
   </table>
-<% end %>
 
 <%else%>
   <%= render :partial => 'welcome/shared/error_messages'%>

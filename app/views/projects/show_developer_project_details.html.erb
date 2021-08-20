@@ -6,13 +6,7 @@
   <span class = 'font-heading ms-4 h2'>Project Name: </span>  <span class = 'font-heading h2 mx-3'><%= @project.projectname%></span>
    </div>
 
-    <%if @bugs.nil? %>
-        <div class = 'col-5 border px-0'>
-        <div class = 'text-center background_gray px-0'>
-          <span class = 'font-heading'>Bugs</span>
-        </div>
-        <p>Congrats you have no bugs to resolve :)</p>
-      <%else%>
+    <%if @bugs.any? %>
         <table class="table border table-dark">
           <thead>
               <tr>
@@ -39,7 +33,9 @@
           <% end %>
 
         </table>
-      <%end%>
+    <% else %>
+      <%= render partial: 'welcome/shared/error_messages'%>
+    <%end%>
   </div>
 
   <div class = 'mt-5 d-flex justify-content-center'>
