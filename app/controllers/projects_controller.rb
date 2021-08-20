@@ -1,5 +1,4 @@
 class ProjectsController < ApplicationController
-  
   before_action -> { reset_bug_status(params[:resourceid], params[:projectid]) }, only: [:remove_users_from_project]
   before_action :authenticate_user!
   def new
@@ -67,6 +66,7 @@ class ProjectsController < ApplicationController
   def remove_users_from_project
     @manage = Manage.find_by(user_id: params[:resourceid], project_id: params[:projectid])
     @resource_id = params[:resourceid]
+    @project_id = params[:projectid]
     if !@manage.nil?
       @manage.destroy
       flash[:message] = 'Successfuly remove user from project'
