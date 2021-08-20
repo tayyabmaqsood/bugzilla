@@ -3,16 +3,12 @@
 
 <% if @projects.any? %>
   <div class = 'mx-3 mt-2'>
-  <table class="table table-borderless">
-    <thead class = 'border-bottom' id = 'projects_list'>
-        <tr>
-          <th scope="col">Project Id</th>
-          <th scope="col">Project Name</th>
-          <th scope="col">Project Description</th>
-        </tr>
-      </thead>
-       <%=  render partial: 'projects/shared/projects_list', collections: @projects%>
-      </tbody>
+  <table class="table table-borderless" id = 'projects_list'>
+    <tbody>
+      <%@projects.each do |project|%>
+        <%=  render partial: 'projects/shared/projects_list', locals:  {:project => project}%>
+      <% end %>
+    </tbody>
   </table>
   </div>
 <%else%>

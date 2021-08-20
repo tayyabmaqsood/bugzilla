@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_action -> { reset_bug_status(params[:resourceid], params[:projectid]) }, only: [:remove_users_from_project]
   before_action :authenticate_user!
   def new
     @project = current_user.projects.build
@@ -23,7 +24,6 @@ class ProjectsController < ApplicationController
     authorize @project
   end
 
-  # this view is only for developer
   def show_developer_project_details
     @project = Project.find(params[:id])
     @bugs = @project.bugs.where(bug_status: 'new')
@@ -118,4 +118,18 @@ class ProjectsController < ApplicationController
     @manage = Manage.where(user_id: user.id, project_id: params[:project_id])
     @manage.count.zero?
   end
+
+  def reset_bug_status(params, project_id)
+    @user = User.find_by(id: params.to_i, user_type: 'developer')
+    unless @user.nil?
+      project = @user.projects.find_by(id: project_id.to_i)
+      project.bugs.where(bug_status: 'started').find_each do |bug|
+      @report = Report.find_by(user_id: params, bug_id: bug.id)
+      unless @report.nil?
+        @report.destroy
+        bug.update(bug_status: 'new')
+      end
+    end
+  end
+end
 end
